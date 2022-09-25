@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr4334u7y26sv"]
+
+[ext_resource type="Script" path="res://player_character/player_character.gd" id="1_tml4c"]
+[ext_resource type="Texture2D" uid="uid://bpxtcocmlphv0" path="res://player_character/face.png" id="2_ofmvy"]
+[ext_resource type="Script" path="res://player_character/multiplayer_synchronizer.gd" id="3_ovx13"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ysndv"]
+albedo_color = Color(0.184314, 0.847059, 1, 1)
+albedo_texture = ExtResource("2_ofmvy")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6rpoo"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pcmc8"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath(".:y_rotation")
+properties/1/spawn = true
+properties/1/sync = true
+
+[node name="PlayerCharacter" type="MeshInstance3D" groups=["player_characters"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = SubResource("StandardMaterial3D_ysndv")
+mesh = SubResource("CapsuleMesh_6rpoo")
+script = ExtResource("1_tml4c")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_pcmc8")
+script = ExtResource("3_ovx13")
